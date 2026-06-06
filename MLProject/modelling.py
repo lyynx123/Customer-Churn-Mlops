@@ -10,7 +10,7 @@ def train_model():
     dagshub.init(repo_owner='lyynx123', repo_name='Eksperimen_SML_Ahmad', mlflow=True)
     
     # Membaca dataset
-    df = pd.read_csv('MLProject/Customer_Churn_Dataset_preprocessing.csv')
+    df = pd.read_csv('Customer_Churn_Dataset_preprocessing.csv')
     X = df.drop(columns=['Churn'])
     y = df['Churn']
     

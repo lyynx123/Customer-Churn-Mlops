@@ -9,7 +9,7 @@ def train_model():
     mlflow.set_tracking_uri("file:///home/runner/work/Workflow-CI/Workflow-CI/mlruns")
     
     # Membaca dataset terupdate dengan nama barumu
-    df = pd.read_csv('MLProject/Customer_Churn_Dataset_preprocessing.csv')
+    df = pd.read_csv('Customer_Churn_Dataset_preprocessing.csv')
     X = df.drop(columns=['Churn'])
     y = df['Churn']
     

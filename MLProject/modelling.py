@@ -1,12 +1,17 @@
 import dagshub
 import mlflow
 import pandas as pd
+import os
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, f1_score
 
 def train_model():
     # Menghubungkan tracking ke DagsHub online (Kriteria 2 Advance)
+    token = os.getenv("DAGSHUB_USER_TOKEN")
+    if token:
+        dagshub.auth.add_app_token(token)
+    
     dagshub.init(repo_owner='lyynx123', repo_name='Eksperimen_SML_Ahmad', mlflow=True)
     
     # Membaca dataset

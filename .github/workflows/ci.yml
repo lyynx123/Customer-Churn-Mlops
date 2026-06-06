@@ -1,0 +1,47 @@
+name: Machine Learning Workflow CI
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  run-ml-project:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Miniconda
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        auto-update-conda: true
+        python-version: '3.12.7'
+
+    - name: Install MLflow and Dependencies
+      shell: bash -l {0}
+      run: |
+        pip install mlflow==2.19.0 pandas numpy scikit-learn
+
+    # Karena file MLProject ada di root depan, jalankan titik posisi saat ini (.)
+    # Kita gunakan parameter --no-conda agar prosesnya kilat dan stabil memanfaatkan env luar
+    - name: Run MLflow Project
+      shell: bash -l {0}
+      run: |
+        mlflow run . --no-conda
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build and Push Docker Image
+      shell: bash -l {0}
+      run: |
+        export MLFLOW_TRACKING_URI="file:///home/runner/work/Workflow-CI/Workflow-CI/mlruns"
+        RUN_ID=$(mlflow search-runs --experiment-names "Telco_Churn_Production" --max-results 1 --output csv | tail -n 1 | cut -d',' -f1)
+        mlflow models build-docker -m "runs:/$RUN_ID/random_forest_model" -n "${{ secrets.DOCKERHUB_USERNAME }}/telco-churn-model:latest"
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/telco-churn-model:latest

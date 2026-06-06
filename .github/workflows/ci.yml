@@ -36,12 +36,11 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    # PERBAIKAN TOTAL: Mencari RUN_ID secara langsung dari folder biner mlruns murni Linux
-    # Cara ini dijamin 100% aman dari perubahan sintaks CLI MLflow versi apa pun
+    # PERBAIKAN MUTLAK: Memaksa MLflow build Docker menggunakan Python 3.12 agar lolos dari eror pip 3.9
     - name: Build and Push Docker Image
       shell: bash -l {0}
       run: |
         export MLFLOW_TRACKING_URI="file:///home/runner/work/Workflow-CI/Workflow-CI/mlruns"
         RUN_ID=$(ls -t mlruns/0/ | grep -v "meta.yaml" | head -n 1)
-        mlflow models build-docker -m "runs:/$RUN_ID/random_forest_model" -n "${{ secrets.DOCKERHUB_USERNAME }}/telco-churn-model:latest"
+        mlflow models build-docker -m "runs:/$RUN_ID/random_forest_model" -n "${{ secrets.DOCKERHUB_USERNAME }}/telco-churn-model:latest" --python-version 3.12
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/telco-churn-model:latest

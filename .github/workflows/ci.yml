@@ -27,8 +27,12 @@ jobs:
         pip install mlflow==2.19.0 dagshub pandas numpy scikit-learn
 
     # Mengeksekusi pelatihan ulang model otomatis lewat perintah MLflow Project
+    # Kita suntikkan kredensial DagsHub ke environment variable agar login otomatis tembus
     - name: Run MLflow Project
       shell: bash -l {0}
+      env:
+        DAGSHUB_USER_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
+        DAGSHUB_USERNAME: "lyynx123"
       run: |
         mlflow run MLProject/
 

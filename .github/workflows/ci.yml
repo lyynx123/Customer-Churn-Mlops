@@ -24,28 +24,26 @@ jobs:
     - name: Install MLflow and Dependencies
       shell: bash -l {0}
       run: |
-        pip install mlflow==2.19.0 dagshub pandas numpy scikit-learn
+        pip install mlflow==2.19.0 pandas numpy scikit-learn
 
     # Mengeksekusi pelatihan ulang model otomatis lewat perintah MLflow Project
-    # Kita suntikkan kredensial DagsHub ke environment variable agar login otomatis tembus
     - name: Run MLflow Project
       shell: bash -l {0}
-      env:
-        DAGSHUB_USER_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
-        DAGSHUB_USERNAME: "lyynx123"
       run: |
-        mlflow run MLProject/
+        mlflow run MLProject/ --no-conda
 
-    # Login ke Docker Hub menggunakan rahasia yang telah kita pasang sebelumnya
+    # Login ke Docker Hub menggunakan rahasia token yang baru kamu perbarui kemarin
     - name: Login to Docker Hub
       uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    # Kriteria Advance: Membangun Docker Image dari model MLflow dan push ke Docker Hub
+    # Kriteria Advance: Membangun Docker Image dari model MLflow lokal dan push ke Docker Hub
     - name: Build and Push Docker Image
       shell: bash -l {0}
       run: |
-        mlflow models build-docker -m "runs:/$(mlflow search-runs --experiment-names "Telco_Churn_RandomForest" --max-results 1 --output csv | tail -n 1 | cut -d',' -f1)/random_forest_model" -n "${{ secrets.DOCKERHUB_USERNAME }}/telco-churn-model:latest"
+        export MLFLOW_TRACKING_URI="file:///home/runner/work/Workflow-CI/Workflow-CI/mlruns"
+        RUN_ID=$(mlflow search-runs --experiment-names "Telco_Churn_Production" --max-results 1 --output csv | tail -n 1 | cut -d',' -f1)
+        mlflow models build-docker -m "runs:/$RUN_ID/random_forest_model" -n "${{ secrets.DOCKERHUB_USERNAME }}/telco-churn-model:latest"
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/telco-churn-model:latest

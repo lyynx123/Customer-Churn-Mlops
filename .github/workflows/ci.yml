@@ -25,7 +25,6 @@ jobs:
       run: |
         pip install mlflow==2.19.0 pandas numpy scikit-learn
 
-    # PERBAIKAN: Mengganti --no-conda menjadi --env-manager local
     - name: Run MLflow Project
       shell: bash -l {0}
       run: |
@@ -37,10 +36,11 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+    # PERBAIKAN: Menambahkan kata 'experiments' sebelum 'search-runs'
     - name: Build and Push Docker Image
       shell: bash -l {0}
       run: |
         export MLFLOW_TRACKING_URI="file:///home/runner/work/Workflow-CI/Workflow-CI/mlruns"
-        RUN_ID=$(mlflow search-runs --experiment-names "Telco_Churn_Production" --max-results 1 --output csv | tail -n 1 | cut -d',' -f1)
+        RUN_ID=$(mlflow experiments search-runs --experiment-names "Telco_Churn_Production" --max-results 1 --output csv | tail -n 1 | cut -d',' -f1)
         mlflow models build-docker -m "runs:/$RUN_ID/random_forest_model" -n "${{ secrets.DOCKERHUB_USERNAME }}/telco-churn-model:latest"
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/telco-churn-model:latest

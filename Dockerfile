@@ -7,7 +7,7 @@ WORKDIR /app
 RUN pip install mlflow==2.19.0 pandas numpy scikit-learn
 
 # Menyalin folder hasil run MLflow ke dalam Docker
-COPY mlruns /app/mlruns
+# COPY mlruns /app/mlruns
 
 # Perintah default saat container dijalankan (opsional, untuk serving model)
 CMD ["mlflow", "models", "serve", "-m", "mlruns/0/", "-h", "0.0.0.0", "-p", "8080"]

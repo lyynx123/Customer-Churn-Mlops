@@ -15,7 +15,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Setup Miniconda
-      uses: conda-incubator/setup-miniconda@v3
+      uses: conda-incubator/setup-mediconda@v3
       with:
         auto-update-conda: true
         python-version: '3.12.7'
@@ -25,12 +25,16 @@ jobs:
       run: |
         pip install mlflow==2.19.0 pandas numpy scikit-learn dagshub
 
+    # PERBAIKAN: Menyuntikkan kredensial token DagsHub langsung ke env server agar tidak meminta otorisasi browser
     - name: Run MLflow Project
       shell: bash -l {0}
+      env:
+        MLFLOW_TRACKING_URI: "https://dagshub.com/lyynx123/Eksperimen_SML_Ahmad.mlflow"
+        MLFLOW_TRACKING_USERNAME: "lyynx123"
+        MLFLOW_TRACKING_PASSWORD: ${{ secrets.DAGSHUB_TOKEN }} 
       run: |
         mlflow run . --env-manager local
 
-    # --- TAMBAHAN LEVEL SKILLED: Menyimpan Artefak Hasil Training ---
     - name: Upload Pipeline Artifacts
       uses: actions/upload-artifact@v4
       with:

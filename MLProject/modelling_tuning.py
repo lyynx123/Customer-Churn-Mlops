@@ -10,9 +10,10 @@ from sklearn.model_selection import GridSearchCV as PengecekParameterOptimal
 from sklearn.metrics import accuracy_score as skor_akurasi, f1_score as skor_f1
 
 def proses_latih_lanjut_replika():
-    os.environ["MLFLOW_TRACKING_USERNAME"] = "lyynx123"
-    
-    os.environ["MLFLOW_TRACKING_PASSWORD"] = "a802de24b3eabb2baa0a949ace3c563c40cd30a7" 
+    # =========================================================================
+    # 🔥 MANTRA BYPASS BENTROKAN ID: Hapus context bawaan mlflow run lokal Ubuntu
+    # =========================================================================
+    os.environ.pop("MLFLOW_RUN_ID", None)
     
     # Menembak langsung alamat server remote MLflow di awan DagsHub
     mlflow.set_tracking_uri("https://dagshub.com/lyynx123/Workflow-CI.mlflow")
@@ -40,8 +41,8 @@ def proses_latih_lanjut_replika():
         mlflow.log_param("max_depth_terbaik", pencari_pohon.best_params_['max_depth'])
         mlflow.log_metric("akurasi_final", nilai_akurasi)
         
-        wadah_sementara = "replika_artifacts"
-        sub_folder_model = os.path.join(wadah_sementara, "model")
+        wadah_temporary = "replika_artifacts"
+        sub_folder_model = os.path.join(wadah_temporary, "model")
         os.makedirs(sub_folder_model, exist_ok=True)
         
         with open(os.path.join(sub_folder_model, "model.pkl"), "wb") as f: pickle.dump(model_jawara, f)
@@ -50,25 +51,23 @@ def proses_latih_lanjut_replika():
         with open(os.path.join(sub_folder_model, "python_env.yaml"), "w") as f: f.write("python: 3.12.7\n")
         with open(os.path.join(sub_folder_model, "requirements.txt"), "w") as f: f.write("mlflow==2.19.0\nscikit-learn\n")
         
-        with open(os.path.join(wadah_sementara, "estimator.html"), "w") as f: f.write("<html><body>DecisionTreeClassifier Tuning Result</body></html>")
-        with open(os.path.join(wadah_sementara, "metric_info.json"), "w") as f: json.dump({"akurasi": nilai_akurasi, "f1_skor": nilai_f1}, f)
+        with open(os.path.join(wadah_temporary, "estimator.html"), "w") as f: f.write("<html><body>DecisionTreeClassifier Tuning Result</body></html>")
+        with open(os.path.join(wadah_temporary, "metric_info.json"), "w") as f: json.dump({"akurasi": nilai_accurasi, "f1_skor": nilai_f1}, f)
         
         penoreh_grafik.figure()
         penoreh_grafik.bar([0, 1], [100, 200], color='blue')
-        penoreh_grafik.savefig(os.path.join(wadah_sementara, "training_confusion_matrix.png"))
+        penoreh_grafik.savefig(os.path.join(wadah_temporary, "training_confusion_matrix.png"))
         penoreh_grafik.close()
         
-        with open(os.path.join(wadah_sementara, "laporan_ekstra_zudin.txt"), "w") as f: f.write("Riset Lanjutan Pengembangan Model Churn oleh Ahmad Izzuddin.\n")
+        with open(os.path.join(wadah_temporary, "laporan_ekstra_zudin.txt"), "w") as f: f.write("Riset Lanjutan Pengembangan Model Churn oleh Ahmad Izzuddin.\n")
         penoreh_grafik.figure()
         penoreh_grafik.plot([1, 2, 3], [0.7, 0.8, 0.85])
-        penoreh_grafik.savefig(os.path.join(wadah_sementara, "grafik_kemajuan_zudin.png"))
+        penoreh_grafik.savefig(os.path.join(wadah_temporary, "grafik_kemajuan_zudin.png"))
         penoreh_grafik.close()
         
-        # Mengunggah langsung seluruh paket replika artefak ke cloud DagsHub
-        mlflow.log_artifacts(wadah_sementara, artifact_path="")
-        
-        shutil.rmtree(wadah_sementara)
-        print(">>> [SUKSES MUTLAK CLOUD] Seluruh artefak replika berhasil mendarat di DagsHub Online!")
+        mlflow.log_artifacts(wadah_temporary, artifact_path="")
+        shutil.rmtree(wadah_temporary)
+        print(">>> [SUKSES MUTLAK AUTOMATION] Seluruh artefak replika mendarat aman di DagsHub via CI Pipeline!")
 
 if __name__ == "__main__":
     proses_latih_lanjut_replika()

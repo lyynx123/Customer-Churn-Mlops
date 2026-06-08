@@ -8,8 +8,11 @@ from sklearn.ensemble import RandomForestClassifier as AlgoritmaHutanKeputusan
 from sklearn.model_selection import train_test_split as pembagi_data_acak
 
 def proses_latih_murni_lokal():
-    # Menyetel tracking URI sesuai standar kaku petunjuk Dicoding
-    mlflow.set_tracking_uri("http://127.0.0.1:5000/")
+    
+    os.environ.pop("MLFLOW_RUN_ID", None)
+    
+    # Setel langsung ke cloud DagsHub agar server GitHub Actions bisa mengirim data
+    mlflow.set_tracking_uri("https://dagshub.com/lyynx123/Workflow-CI.mlflow")
     mlflow.set_experiment("Eksperimen_Dasar_Zudin")
     
     mlflow.sklearn.autolog()
@@ -27,7 +30,7 @@ def proses_latih_murni_lokal():
     with mlflow.start_run(run_name="Sesi_Autolog_Basic"):
         arsitektur_hutan = AlgoritmaHutanKeputusan(n_estimators=100, max_depth=8, random_state=42)
         arsitektur_hutan.fit(x_latih, y_latih)
-        print("[SUKSES] Model basic berhasil direkam ke server lokal!")
+        print("[SUKSES] Model basic berhasil direkam secara cloud!")
 
 if __name__ == "__main__":
     proses_latih_murni_lokal()

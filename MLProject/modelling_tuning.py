@@ -10,7 +10,7 @@ from sklearn.model_selection import GridSearchCV as PengecekParameterOptimal
 from sklearn.metrics import accuracy_score as skor_akurasi, f1_score as skor_f1
 
 def proses_latih_lanjut_replika():
-  
+    # Mengeliminasi bentrokan ID konteks dari GitHub Actions
     os.environ.pop("MLFLOW_RUN_ID", None)
     
     # Menembak langsung alamat server remote MLflow di awan DagsHub
@@ -50,6 +50,8 @@ def proses_latih_lanjut_replika():
         with open(os.path.join(sub_folder_model, "requirements.txt"), "w") as f: f.write("mlflow==2.19.0\nscikit-learn\n")
         
         with open(os.path.join(wadah_temporary, "estimator.html"), "w") as f: f.write("<html><body>DecisionTreeClassifier Tuning Result</body></html>")
+        
+        # FIX: Menggunakan variabel yang benar (nilai_akurasi) tanpa ada typo huruf 'c'
         with open(os.path.join(wadah_temporary, "metric_info.json"), "w") as f: json.dump({"akurasi": nilai_akurasi, "f1_skor": nilai_f1}, f)
         
         penoreh_grafik.figure()

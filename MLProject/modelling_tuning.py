@@ -50,7 +50,7 @@ def proses_latih_lanjut_replika():
         with open(os.path.join(sub_folder_model, "requirements.txt"), "w") as f: f.write("mlflow==2.19.0\nscikit-learn\n")
         
         with open(os.path.join(wadah_temporary, "estimator.html"), "w") as f: f.write("<html><body>DecisionTreeClassifier Tuning Result</body></html>")
-        with open(os.path.join(wadah_temporary, "metric_info.json"), "w") as f: json.dump({"akurasi": nilai_accurasi, "f1_skor": nilai_f1}, f)
+        with open(os.path.join(wadah_temporary, "metric_info.json"), "w") as f: json.dump({"akurasi": nilai_akurasi, "f1_skor": nilai_f1}, f)
         
         penoreh_grafik.figure()
         penoreh_grafik.bar([0, 1], [100, 200], color='blue')

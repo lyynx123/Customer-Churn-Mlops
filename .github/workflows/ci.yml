@@ -14,7 +14,7 @@ jobs:
       - name: Ambil Kode dari Repositori
         uses: actions/checkout@v3
 
-      - name: Pasang Sistem Python Python
+      - name: Pasang Sistem Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
@@ -30,4 +30,4 @@ jobs:
           MLFLOW_TRACKING_PASSWORD: ${{ secrets.MLFLOW_TRACKING_PASSWORD }}
         run: |
           cd MLProject
-          mlflow run . --no-conda --entry-point tuning
+          mlflow run . --env-manager local --entry-point tuning

@@ -1,0 +1,9 @@
+name: Proyek_MLOps_Advanced_Zudin
+
+conda_env: conda.yaml
+
+entry_points:
+  main:
+    command: "python modelling.py"
+  tuning:
+    command: "python modelling_tuning.py"

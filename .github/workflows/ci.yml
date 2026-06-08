@@ -1,4 +1,4 @@
-name: Machine Learning Pipeline CI - Advanced Multi-Stage
+name: Machine Learning Pipeline CI 
 
 on:
   push:
@@ -11,21 +11,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📂 Stage 1 - Ambil Kode dari Repositori
+      - name:  Stage 1 - Ambil Kode dari Repositori
         uses: actions/checkout@v3
 
-      - name: 🐍 Stage 2 - Pasang Sistem Python Environment
+      - name:  Stage 2 - Pasang Sistem Python Environment
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      - name: 🚀 Stage 3 - Upgrade Sistem Management Pip
+      - name:  Stage 3 - Upgrade Sistem Management Pip
         run: python -m pip install --upgrade pip
 
-      - name: 📦 Stage 4 - Pasang Core Dependencies (MLflow & Scikit-Learn)
+      - name:  Stage 4 - Pasang Core Dependencies (MLflow & Scikit-Learn)
         run: pip install mlflow==2.19.0 scikit-learn pandas matplotlib
 
-      - name: 🔍 Stage 5 - Validasi Integritas Dataset Preprocessing
+      - name:  Stage 5 - Validasi Integritas Dataset Preprocessing
         run: |
           if [ -f "MLProject/Customer_Churn_Dataset_preprocessing.csv" ]; then
             echo "Dataset terdeteksi dan aman untuk digunakan."
@@ -34,7 +34,7 @@ jobs:
             exit 1
           fi
 
-      - name: 🎯 Stage 6 - Eksekusi MLproject: Baseline Model (Main Entry)
+      - name: � Stage 6 - Eksekusi MLproject: Baseline Model (Main Entry)
         env:
           MLFLOW_TRACKING_USERNAME: ${{ secrets.MLFLOW_TRACKING_USERNAME }}
           MLFLOW_TRACKING_PASSWORD: ${{ secrets.MLFLOW_TRACKING_PASSWORD }}
@@ -42,7 +42,7 @@ jobs:
           cd MLProject
           mlflow run . --env-manager local --entry-point main
 
-      - name: 🔥 Stage 7 - Eksekusi MLproject: Hyperparameter Tuning (Advanced Entry)
+      - name: � Stage 7 - Eksekusi MLproject: Hyperparameter Tuning (Advanced Entry)
         env:
           MLFLOW_TRACKING_USERNAME: ${{ secrets.MLFLOW_TRACKING_USERNAME }}
           MLFLOW_TRACKING_PASSWORD: ${{ secrets.MLFLOW_TRACKING_PASSWORD }}

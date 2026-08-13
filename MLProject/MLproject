@@ -1,4 +1,4 @@
-name: Proyek_MLOps_Advanced_Zudin
+name: Customer_Churn_MLOps
 
 conda_env: conda.yaml
 

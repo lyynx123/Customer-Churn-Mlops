@@ -1,4 +1,4 @@
-name: Machine Learning Pipeline CI - Advanced Multi-Stage
+name: Customer Churn ML Pipeline CI
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ main, master ]
 
 jobs:
-  MLOps-Automation-Pipeline:
+  customer-churn-ml-pipeline:
     runs-on: ubuntu-latest
 
     steps:

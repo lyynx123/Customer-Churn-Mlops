@@ -18,7 +18,7 @@
 
 ## 📌 Overview
 
-**Workflow-CI** adalah proyek Machine Learning yang membangun pipeline **Customer Churn Prediction** sekaligus menerapkan konsep **MLOps** untuk mengotomatisasi proses eksperimen, training, hyperparameter tuning, experiment tracking, artifact management, dan continuous integration.
+**Customer-Churn-Mlops** adalah proyek Machine Learning yang membangun pipeline **Customer Churn Prediction** sekaligus menerapkan konsep **MLOps** untuk mengotomatisasi proses eksperimen, training, hyperparameter tuning, experiment tracking, artifact management, dan continuous integration.
 
 Proyek ini menggunakan **MLflow Project** sebagai struktur eksekusi machine learning, **DagsHub** sebagai remote MLflow tracking server, **GitHub Actions** untuk menjalankan pipeline secara otomatis, serta **Docker** sebagai dasar containerization dan model serving.
 

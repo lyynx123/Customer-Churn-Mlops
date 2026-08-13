@@ -1,5 +1,4 @@
 # Customer Churn Prediction — End-to-End Machine Learning & MLOps Pipeline
-# Customer Churn Prediction — Machine Learning & MLOps Pipeline
 
 <p align="center">
   <b>End-to-End Machine Learning Workflow with MLflow, DagsHub, GitHub Actions CI/CD, Hyperparameter Tuning, and Docker</b>
